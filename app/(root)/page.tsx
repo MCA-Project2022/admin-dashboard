@@ -1,13 +1,20 @@
 "use client";
-import { Model } from "@/components/ui/model";
-import { UserButton } from "@clerk/nextjs";
+
+import { useEffect } from "react";
+
+import { UseStoreModel } from "@/hooks/use-store-model";
 
 const SetupPage = () => {
+  const onOpen = UseStoreModel((state) => state.onOpen);
+  const isOpen = UseStoreModel((state) => state.isOpen);
+  useEffect(() => {
+    if (!isOpen) {
+      onOpen();
+    }
+  }, [isOpen, onOpen]);
   return (
     <div className="p-4">
-      <Model title="Test" description="Desc Test" isOpen onClose={() => { }}>
-        Children
-      </Model>
+      Root Page
     </div>
   )
 }
