@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { AlertModel } from "@/components/models/alert-model";
 
 interface SettingsFormProps {
     initialData: Store;
@@ -50,8 +51,29 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
             setLoading(false);
         }
     };
+    const onDelete = async () => {
+        try {
+            setLoading(true);
+            await axios.delete(`/api/stores/${params.storeId}`);
+            router.refresh();
+            router.push("/");
+            toast.success("Store Deleted successfully");
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed. Remove all the products and categories first.");
+        } finally {
+            setLoading(false);
+            setOpen(false);
+        }
+    };
     return (
         <>
+            <AlertModel
+                isOpen={open}
+                onClose={() => setOpen(false)}
+                onConfirm={onDelete}
+                loading={loading}
+            />
             <div className="flex items-center justify-between">
                 <Heading
                     title="Settings"
