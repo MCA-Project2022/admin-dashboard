@@ -5,14 +5,14 @@ import { CopyIcon, EditIcon, MoreHorizontal, TrashIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 
-import { BillboardColumn } from "./columns";
+import { CategoryColumn } from "./columns";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { AlertModel } from "@/components/models/alert-model";
 
 interface CellActionProps {
-  data: BillboardColumn;
+  data: CategoryColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -22,17 +22,17 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Billboard ID copied to the clipboard");
+    toast.success("Category ID copied to the clipboard");
   }
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+      await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
       router.refresh();
-      toast.success("Billboard Deleted successfully");
+      toast.success("Category Deleted successfully");
     } catch (error) {
       console.error(error);
-      toast.error("Failed. Remove all the categories first.");
+      toast.error("Failed. Remove all the products using this category first.");
     } finally {
       setLoading(false);
       setOpen(false);
@@ -56,7 +56,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <CopyIcon className="mr-2 h-4 w-4" />
             Copy ID
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}>
+          <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/categories/${data.id}`)}>
             <EditIcon className="mr-2 h-4 w-4" />
             Update
           </DropdownMenuItem>
