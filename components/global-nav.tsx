@@ -18,6 +18,11 @@ export function GlobalNav({
             active: pathName === `/${params.storeId}`,
         },
         {
+            href: `/${params.storeId}/categories`,
+            label: "Categories",
+            active: pathName === `/${params.storeId}/categories`,
+        },
+        {
             href: `/${params.storeId}/billboards`,
             label: "Billboards",
             active: pathName === `/${params.storeId}/billboards`,
