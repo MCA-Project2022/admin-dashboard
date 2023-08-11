@@ -5,14 +5,14 @@ import { CopyIcon, EditIcon, MoreHorizontal, TrashIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 
-import { SizeColumn } from "./columns";
+import { ColorColumn } from "./columns";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { AlertModel } from "@/components/models/alert-model";
 
 interface CellActionProps {
-  data: SizeColumn;
+  data: ColorColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -22,17 +22,17 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Size ID copied to the clipboard");
+    toast.success("Color ID copied to the clipboard");
   }
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
+      await axios.delete(`/api/${params.storeId}/colors/${data.id}`);
       router.refresh();
-      toast.success("Size Deleted successfully");
+      toast.success("Color Deleted successfully");
     } catch (error) {
       console.error(error);
-      toast.error("Failed. Remove all the products first.");
+      toast.error("Failed. Remove all the products using this color first.");
     } finally {
       setLoading(false);
       setOpen(false);
@@ -56,7 +56,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <CopyIcon className="mr-2 h-4 w-4" />
             Copy ID
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/sizes/${data.id}`)}>
+          <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/colors/${data.id}`)}>
             <EditIcon className="mr-2 h-4 w-4" />
             Update
           </DropdownMenuItem>
