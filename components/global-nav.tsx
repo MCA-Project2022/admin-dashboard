@@ -28,6 +28,11 @@ export function GlobalNav({
             active: pathName === `/${params.storeId}/sizes`,
         },
         {
+            href: `/${params.storeId}/colors`,
+            label: "Colors",
+            active: pathName === `/${params.storeId}/colors`,
+        },
+        {
             href: `/${params.storeId}/billboards`,
             label: "Billboards",
             active: pathName === `/${params.storeId}/billboards`,
