@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CreditCardIcon, IndianRupeeIcon, PackageIcon } from "lucide-react";
 import { priceFormatter } from "@/lib/utils";
 import { getTotalRevenue } from "@/actions/get-total-revenue";
+import { getSalesCount } from "@/actions/get-sales-count";
+import { getStockCount } from "@/actions/get-stock-count";
 
 
 interface DashboardPageProps {
@@ -15,8 +17,8 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
     params
 }) => {
     const totalRevenue = await getTotalRevenue(params.storeId);
-    const salesCount = () => { };
-    const stockCount = () => { };
+    const salesCount = await getSalesCount(params.storeId);
+    const stockCount = await getStockCount(params.storeId);
     return (
         <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
@@ -45,7 +47,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-bold">
-                                +25
+                                +{salesCount}
                             </div>
                         </CardContent>
                     </Card>
@@ -58,7 +60,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-bold">
-                                12
+                                {stockCount}
                             </div>
                         </CardContent>
                     </Card>
