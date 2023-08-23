@@ -6,7 +6,7 @@ import { TrashIcon } from "lucide-react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Store } from "@prisma/client";
+import { Billboard, Store } from "@prisma/client";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
@@ -19,18 +19,21 @@ import { Input } from "@/components/ui/input";
 import { AlertModel } from "@/components/models/alert-model";
 import { ApiAlert } from "@/components/ui/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface SettingsFormProps {
-  initialData: Store;
+  initialData: Store,
+  billboards: Billboard[],
 }
 
 const formSchema = z.object({
   name: z.string().min(1),
+  homeBillboardId: z.string(),
 });
 
 type SettingsFormValues = z.infer<typeof formSchema>;
 export const SettingsForm: React.FC<SettingsFormProps> = ({
-  initialData
+  initialData, billboards
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -39,7 +42,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
   const [loading, setLoading] = useState(false);
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: initialData
   });
   const onSubmit = async (data: SettingsFormValues) => {
     try {
@@ -103,6 +106,38 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                   <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input disabled={loading} placeholder="Store Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="homeBillboardId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Home Billboard</FormLabel>
+                  <FormControl>
+                    <Select
+                      disabled={loading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} placeholder="Select home billboard" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {billboards.map((billboard) => (
+                          <SelectItem
+                            key={billboard.id}
+                            value={billboard.id}>
+                            {billboard.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
