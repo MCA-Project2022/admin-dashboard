@@ -29,6 +29,7 @@ interface SettingsFormProps {
 const formSchema = z.object({
   name: z.string().min(1),
   homeBillboardId: z.string(),
+  frontendUrl: z.string(),
 });
 
 type SettingsFormValues = z.infer<typeof formSchema>;
@@ -138,6 +139,19 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                         ))}
                       </SelectContent>
                     </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="frontendUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Store&apos;s Frontend URL</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Store URL" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

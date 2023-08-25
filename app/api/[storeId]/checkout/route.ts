@@ -58,7 +58,11 @@ export async function POST(
             }
         }
     });
-
+    const store = await prismadb.store.findUniqueOrThrow({
+        where: {
+            id: params.storeId,
+        }
+    })
     const session = await stripe.checkout.sessions.create({
         line_items,
         mode: "payment",
@@ -66,8 +70,8 @@ export async function POST(
         phone_number_collection: {
             enabled: true
         },
-        success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
-        cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?cancelled=1`,
+        success_url: `${store.frontendUrl}/cart?success=1`,
+        cancel_url: `${store.frontendUrl}/cart?cancelled=1`,
         metadata: {
             orderId: order.id
         }
