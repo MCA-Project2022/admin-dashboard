@@ -21,6 +21,7 @@ import { AlertModel } from "@/components/models/alert-model";
 import { useOrigin } from "@/hooks/use-origin";
 import ImageUpload from "@/components/ui/image-upload";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 
 
 
@@ -31,6 +32,7 @@ const formSchema = z.object({
   categoryId: z.string().min(1),
   colorId: z.string().min(1),
   sizeId: z.string().min(1),
+  description: z.string(),
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
 });
@@ -71,6 +73,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       categoryId: '',
       colorId: '',
       sizeId: '',
+      description: '',
       isFeatured: false,
       isArchived: false,
     }
@@ -269,6 +272,19 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                         ))}
                       </SelectContent>
                     </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea disabled={loading} placeholder="Product Description" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
